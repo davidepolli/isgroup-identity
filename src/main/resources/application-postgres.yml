@@ -1,0 +1,16 @@
+spring:
+  docker:
+    compose:
+      enabled: true
+      file: docker/docker-compose.yaml
+      lifecycle-management: start-and-stop
+  datasource:
+    url: jdbc:postgresql://localhost:5432/users_db
+    username: appuser
+    password: apppasswd
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  #flyway:
+  #  enabled: true
