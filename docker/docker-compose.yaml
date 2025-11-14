@@ -4,17 +4,9 @@ services:
     container_name: pg16-app
     restart: unless-stopped
     environment:
-      # Superuser predefinito
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: postgres
-
-      # Variabili usate dallo script di init per creare utente/db applicativi
-      APP_DB: ${APP_DB}
-      APP_USER: ${APP_USER}
-      APP_PASSWORD: ${APP_PASSWORD}
-
-      TZ: Europe/Rome
+      POSTGRES_USER: ${APP_USER}
+      POSTGRES_PASSWORD: ${APP_PASSWORD}
+      POSTGRES_DB: ${APP_DB}
     ports:
       - "5432:5432"
     volumes:
@@ -25,6 +17,5 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
 volumes:
   pgdata:
