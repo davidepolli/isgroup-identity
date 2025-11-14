@@ -1,10 +1,10 @@
-package it.isgroup.usersmanagement;
+package it.isgroup.identity;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class UsersmanagementApplicationTests {
+class IdentityApplicationTests {
 
 	@Test
 	void contextLoads() {
