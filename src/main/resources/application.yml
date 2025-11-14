@@ -1,4 +1,7 @@
 spring:
+  output.ansi.enabled: always
+  application:
+    name: isgroup-identity
   docker:
     compose:
       enabled: false
@@ -17,5 +20,19 @@ spring:
     console:
       enabled: true
       path: /h2
+  flyway:
+    enabled: false
 server:
   port: 8080
+  servlet:
+    context-path: /isgroup-identity
+logging:
+  level:
+    root: INFO
+    it.isgroup.identity: DEBUG
+  file:
+    name: logs/identity.log  
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
+    file:    "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
+  
