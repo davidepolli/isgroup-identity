@@ -10,7 +10,8 @@ spring:
     password: apppasswd
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     open-in-view: false
-  #flyway:
-  #  enabled: true
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
