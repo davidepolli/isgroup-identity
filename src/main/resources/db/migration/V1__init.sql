@@ -25,4 +25,5 @@ CREATE TABLE user_roles (
 
 -- helpful indexes
 CREATE INDEX idx_users_username  ON users(username);
+CREATE INDEX idx_users_email  ON users(email);
 CREATE INDEX idx_users_last_name ON users(last_name);
