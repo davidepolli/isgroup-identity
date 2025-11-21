@@ -2,6 +2,9 @@ package it.isgroup.identity.rest.dto;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import it.isgroup.identity.domain.Role;
 
@@ -11,6 +14,8 @@ import it.isgroup.identity.domain.Role;
  * Usato nei payload HAL (HATEOAS) come contenuto dell'EntityModel.
  * </p>
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonFilter("userFilter")
 @Schema(name = "UserResponse", description = "Rappresentazione di un utente restituita dalle API.")
 public record UserResponse(@Schema(description = "Identificativo tecnico dell'utente.", example = "1") Long id,
 
