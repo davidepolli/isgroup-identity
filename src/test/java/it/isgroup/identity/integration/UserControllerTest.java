@@ -23,8 +23,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrint;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -53,11 +55,12 @@ class UserControllerTest {
 
 	@Test
 	@DisplayName("Creazione utente -> 201 + Location + link self")
+	@WithMockUser(username="admin", roles={"ADMIN"})
 	void createUser_shouldReturn201_andSelfLink() throws Exception {
-		var req = new UserCreateRequest("mrossi", "m.rossi@example.com", "RSSMRA80A01H501U", "Mario", "Rossi",
+		 UserCreateRequest req = new UserCreateRequest("mrossi", "m.rossi@example.com", "RSSMRA80A01H501U", "Mario", "Rossi",
 				Set.of(Role.DEVELOPER, Role.REPORTER));
 
-		var result = mvc
+		 MvcResult result = mvc
 				.perform(post(API_BASE).contentType(MediaType.APPLICATION_JSON).accept(HAL_JSON)
 						.content(om.writeValueAsString(req)))
 				.andExpect(status().isCreated()).andExpect(header().string("Location", containsString(API_BASE)))
@@ -71,12 +74,26 @@ class UserControllerTest {
 				.andExpect(jsonPath("$._links.self.href", containsString(location)))
 				.andExpect(jsonPath("$.username").value("mrossi"));
 	}
+	
+	@Test
+	@DisplayName("Creazione utente non permessa -> 403")
+	@WithMockUser(username="reader", roles={"USER"})
+	void forbiddedn_createUser_shouldReturn403() throws Exception {
+		 UserCreateRequest req = new UserCreateRequest("mrossi", "m.rossi@example.com", "RSSMRA80A01H501U", "Mario", "Rossi",
+				Set.of(Role.DEVELOPER, Role.REPORTER));
+
+		mvc.perform(post(API_BASE).contentType(MediaType.APPLICATION_JSON).accept(HAL_JSON)
+			.content(om.writeValueAsString(req)))
+			.andExpect(status().isForbidden());
+
+	}
 
 	@Test
 	@DisplayName("Lista utenti (paged HAL) -> contiene _embedded e link di navigazione")
+	@WithMockUser(username="admin", roles={"ADMIN"})
 	void listUsers_shouldReturnHalPagedModel() throws Exception {
 		// ensure at least one user exists
-		var req = new UserCreateRequest("pgalli", "p.galli@example.com", null, "Paolo", "Galli", Set.of(Role.REPORTER));
+		UserCreateRequest req = new UserCreateRequest("pgalli", "p.galli@example.com", null, "Paolo", "Galli", Set.of(Role.REPORTER));
 		mvc.perform(post(API_BASE).contentType(MediaType.APPLICATION_JSON).accept(HAL_JSON)
 				.content(om.writeValueAsString(req))).andExpect(status().isCreated());
 
@@ -90,15 +107,16 @@ class UserControllerTest {
 
 	@Test
 	@DisplayName("Aggiornamento utente -> ruoli sostituiti (PUT semantics)")
+	@WithMockUser(username="operator", roles={"OPERATOR"})
 	void updateUser_shouldReplaceRoles() throws Exception {
-		var create = new UserCreateRequest("lbianchi", "l.bianchi@example.com", null, "Luca", "Bianchi",
+		 UserCreateRequest create = new UserCreateRequest("lbianchi", "l.bianchi@example.com", null, "Luca", "Bianchi",
 				Set.of(Role.REPORTER));
-		var createRes = mvc.perform(post(API_BASE).contentType(MediaType.APPLICATION_JSON).accept(HAL_JSON)
+		 MvcResult createRes = mvc.perform(post(API_BASE).contentType(MediaType.APPLICATION_JSON).accept(HAL_JSON)
 				.content(om.writeValueAsString(create))).andExpect(status().isCreated()).andReturn();
 
 		String location = createRes.getResponse().getHeader("Location");
 
-		var update = new UserUpdateRequest("lbianchi", null, "Luca", "Bianchi",
+		 UserUpdateRequest update = new UserUpdateRequest("lbianchi", null, "Luca", "Bianchi",
 				Set.of(Role.DEVELOPER, Role.MAINTAINER));
 
 		mvc.perform(put(location).contentType(MediaType.APPLICATION_JSON).accept(HAL_JSON)
@@ -108,9 +126,10 @@ class UserControllerTest {
 
 	@Test
 	@DisplayName("Eliminazione utente -> 204 e poi 404 al recupero")
+	@WithMockUser(username="admin", roles={"ADMIN"})
 	void deleteUser_thenNotFound() throws Exception {
-		var req = new UserCreateRequest("tverde", "t.verde@example.com", null, "Tina", "Verde", Set.of(Role.OPERATOR));
-		var res = mvc.perform(post(API_BASE).contentType(MediaType.APPLICATION_JSON).accept(HAL_JSON)
+		 UserCreateRequest req = new UserCreateRequest("tverde", "t.verde@example.com", null, "Tina", "Verde", Set.of(Role.OPERATOR));
+		 MvcResult res = mvc.perform(post(API_BASE).contentType(MediaType.APPLICATION_JSON).accept(HAL_JSON)
 				.content(om.writeValueAsString(req))).andExpect(status().isCreated()).andReturn();
 		String location = res.getResponse().getHeader("Location");
 

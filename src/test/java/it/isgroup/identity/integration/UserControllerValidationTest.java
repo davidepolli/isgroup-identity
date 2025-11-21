@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -36,6 +37,7 @@ public class UserControllerValidationTest {
 
 	@Test
 	@DisplayName("Create -> 400 when mandatory fields missing/invalid")
+	@WithMockUser(username="admin", roles={"ADMIN"})
 	void create_should400_onValidationErrors() throws Exception {
 		var invalid = new UserCreateRequest("", // username blank
 				"not-an-email", // invalid email
@@ -52,6 +54,7 @@ public class UserControllerValidationTest {
 
 	@Test
 	@DisplayName("Create -> 409 on duplicate email")
+	@WithMockUser(username="admin", roles={"ADMIN"})
 	void create_should409_onDuplicateEmail() throws Exception {
 		var ok = new UserCreateRequest("usr1", "dup@example.com", null, null, null, Set.of(Role.OPERATOR));
 		mvc.perform(post(API_BASE).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(ok)))
