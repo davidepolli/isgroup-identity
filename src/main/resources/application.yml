@@ -19,6 +19,7 @@ spring:
     open-in-view: false
     properties:
       hibernate.format_sql: true
+      hibernate.jdbc.time_zone: UTC
   h2:
     console:
       enabled: true
@@ -27,34 +28,30 @@ spring:
     enabled: true
     locations: "classpath:db/migration/{vendor}"
     baseline-on-migrate: true
-  #security:
-  #  oauth2:
-  #    #resourceserver:
-  #    #  jwt:
-  #    #    issuer-uri: https://idpgw.test4mind.com/realms/demo-interview
-  #    #    jwk-set-uri: https://idpgw.test4mind.com/realms/demo-interview/protocol/openid-connect/certs
-  #    client:
-  #      registration:
-  #        demo-task:
-  #          client-id: demo-task
-  #          client-secret: 8PDH3fflpbzJyx2rAy39SPB60OuSjeX6
-  #          authorization-grant-type: authorization_code
-  #          redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-  #          scope: openid, profile, email
-  #      provider:
-  #        demo-task:
-  #          issuer-uri: https://idpgw.test4mind.com/realms/demo-interview
+  security:
+    oauth2:
+      client:
+        registration:
+          demo-task:
+            client-id: demo-task
+            client-secret: 8PDH3fflpbzJyx2rAy39SPB60OuSjeX6
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid,profile,email
+        provider:
+          demo-task:
+            issuer-uri: https://idpgw.test4mind.com/realms/demo-interview
 server:
   port: 8080
   servlet:
     context-path: /identity
-logging:
-  level:
-    root: INFO
-    it.isgroup.identity: DEBUG
-    org.springframework.security: DEBUG
-  file:
-    name: logs/identity.log  
-  pattern:
-    console: "%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
-    file:    "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
+#logging:
+#  level:
+#    root: INFO
+#    it.isgroup.identity: DEBUG
+#    org.springframework.security: DEBUG
+#  file:
+#    name: logs/identity.log  
+#  pattern:
+#    console: "%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
+#    file:    "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
