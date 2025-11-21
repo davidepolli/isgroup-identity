@@ -18,6 +18,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import it.isgroup.identity.audit.Audit;
 import it.isgroup.identity.rest.assembler.UserModelAssembler;
 import it.isgroup.identity.rest.dto.UserCreateRequest;
 import it.isgroup.identity.rest.dto.UserResponse;
@@ -71,7 +73,8 @@ public class UserController {
 	              schema = @Schema(implementation = PagedModel.class)))
 	  })
 	  @GetMapping(produces = { "application/hal+json" })
-	  //@PreAuthorize("hasAnyRole('ADMIN, OPERATOR, USER')")
+	  @PreAuthorize("hasAnyRole('ADMIN','OPERATOR','USER')")
+	  @Audit(action = "USER_LIST", resource = "User")
 	  public PagedModel<EntityModel<UserResponse>> list(
 		@ParameterObject
 		@Parameter(description = "Parametri di paginazione")
@@ -99,7 +102,8 @@ public class UserController {
 	      @ApiResponse(responseCode = "404", description = "Utente non trovato")
 	  })
 	  @GetMapping(value = "/{id}", produces = { "application/hal+json" })
-	  //@PreAuthorize("hasAnyRole('ADMIN, OPERATOR, USER')")
+	  @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR','USER')")
+	  @Audit(action = "USER_READ", resource = "User", idArg = "id")
 	  public EntityModel<UserResponse> get(@PathVariable Long id) {
 	    return assembler.toModel(service.get(id));
 	  }
@@ -114,7 +118,8 @@ public class UserController {
 	      @ApiResponse(responseCode = "409", description = "Email già in uso")
 	  })
 	  @PostMapping(consumes = "application/json", produces = { "application/hal+json" })
-	  //@PreAuthorize("hasAnyRole('ADMIN, OPERATOR')")
+	  @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
+	  @Audit(action = "USER_CREATE", resource = "User")
 	  public ResponseEntity<EntityModel<UserResponse>> create(@Valid @RequestBody UserCreateRequest req) {
 	    var out = service.create(req);
 	    var model = assembler.toModel(out);
@@ -132,7 +137,8 @@ public class UserController {
 	      @ApiResponse(responseCode = "404", description = "Utente non trovato")
 	  })
 	  @PutMapping(value = "/{id}", consumes = "application/json", produces = { "application/hal+json" })
-	  //@PreAuthorize("hasAnyRole('ADMIN, OPERATOR')")
+	  @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
+	  @Audit(action = "USER_UPDATE", resource = "User", idArg = "id")
 	  public EntityModel<UserResponse> update(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest req) {
 	    return assembler.toModel(service.update(id, req));
 	  }
@@ -146,7 +152,8 @@ public class UserController {
 	      @ApiResponse(responseCode = "404", description = "Utente non trovato")
 	  })
 	  @DeleteMapping("/{id}")
-	  //@PreAuthorize("hasRole('ADMIN')")
+	  @PreAuthorize("hasRole('ADMIN')")
+	  @Audit(action = "USER_DELETE", resource = "User", idArg = "id")
 	  public ResponseEntity<Void> delete(@PathVariable Long id) {
 	    service.delete(id);
 	    return ResponseEntity.noContent().build();
