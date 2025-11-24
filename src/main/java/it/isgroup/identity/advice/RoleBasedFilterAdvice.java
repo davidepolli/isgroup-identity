@@ -3,6 +3,7 @@ package it.isgroup.identity.advice;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.lang.NonNull;
@@ -15,6 +16,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
+/**
+ * filtro degli attributi serializzati in base al ruolo
+ */
 @ControllerAdvice
 public class RoleBasedFilterAdvice implements ResponseBodyAdvice<Object> {
 
@@ -31,15 +35,15 @@ public class RoleBasedFilterAdvice implements ResponseBodyAdvice<Object> {
 		if (body == null)
 			return null;
 
-		SimpleFilterProvider filters = new com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider().setFailOnUnknownId(false)
+		SimpleFilterProvider filters = new SimpleFilterProvider().setFailOnUnknownId(false)
 				.addFilter("userFilter", filterFor(currentAuth()));
 
-		if (body instanceof org.springframework.http.converter.json.MappingJacksonValue mjv) {
+		if (body instanceof MappingJacksonValue mjv) {
 			mjv.setFilters(filters);
 			return mjv;
 		}
 
-		var wrapper = new org.springframework.http.converter.json.MappingJacksonValue(body);
+		var wrapper = new MappingJacksonValue(body);
 		wrapper.setFilters(filters);
 		return wrapper;
 	}
