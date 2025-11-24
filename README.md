@@ -57,6 +57,7 @@ http://localhost:8080/identity/swagger-ui/index.html
 
 per effettuare chiamate autenticate.
 
+NOTA: una volta autenticati, per testare un utente con permessi diversi è necessario chiudere il browser ed iniziare una nuova sessione.
 
 
 ## TODO
