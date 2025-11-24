@@ -21,29 +21,27 @@ import io.swagger.v3.oas.annotations.servers.Server;
     info = @Info(
         title = "Identity / Users Management API",
         version = "0.1.0",
-        description = "API per la gestione utenti e ruoli.",
-        contact = @Contact(name = "davidep", email = "davide.polli1@gamil.com")
+        description = "API per la gestione utenti e ruoli."
     ),
     servers = @Server(url = "http://localhost:8080/identity")
 )
 
 
-//@SecurityScheme(
-//    name = "keycloak-oauth",
-//    type = SecuritySchemeType.OAUTH2,
-//    flows = @OAuthFlows(
-//    	
-//        authorizationCode = @OAuthFlow(
-//            authorizationUrl = "https://idpgw.test4mind.com/realms/demo-interview/protocol/openid-connect/auth",
-//            tokenUrl         = "https://idpgw.test4mind.com/realms/demo-interview/protocol/openid-connect/token",
-//            scopes = {
-//                @OAuthScope(name = "openid",  description = "OpenID Connect"),
-//                @OAuthScope(name = "profile", description = "Profilo utente"),
-//                @OAuthScope(name = "email",   description = "Email utente")
-//            }
-//        )
-//    )
-//)
+@SecurityScheme(
+		  name = "keycloak-oauth",
+		  type = SecuritySchemeType.OAUTH2,
+		  flows = @OAuthFlows(
+		    authorizationCode = @OAuthFlow(
+		      authorizationUrl = "https://idpgw.test4mind.com/realms/demo-interview/protocol/openid-connect/auth",
+		      tokenUrl         = "https://idpgw.test4mind.com/realms/demo-interview/protocol/openid-connect/token",
+		      scopes = {
+		        @OAuthScope(name = "openid",  description = "OpenID"),
+		        @OAuthScope(name = "profile", description = "Profile"),
+		        @OAuthScope(name = "email",   description = "Email")
+		      }
+		    )
+		  )
+		)
 @Configuration
 public class OpenApiConfig {
   // Configurazioni avanzate (security, gruppi) possono essere aggiunte qui.
