@@ -34,6 +34,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import it.isgroup.identity.audit.Audit;
 import it.isgroup.identity.rest.assembler.UserModelAssembler;
 import it.isgroup.identity.rest.dto.UserCreateRequest;
@@ -44,6 +45,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@SecurityRequirement(name = "keycloak-oauth")
 public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);

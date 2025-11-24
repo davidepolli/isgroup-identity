@@ -1,6 +1,12 @@
 springdoc:
   swagger-ui:
     persist-authorization: false
+    oauth2-redirect-url: http://localhost:8080/identity/swagger-ui/oauth2-redirect.html
+    oauth:
+      client-id: demo-task
+      client-secret: 8PDH3fflpbzJyx2rAy39SPB60OuSjeX6
+      scopes: openid,profile,email
+      use-pkce-with-authorization-code-grant: true
 spring:
   output.ansi.enabled: always
   application:
@@ -48,13 +54,3 @@ server:
   port: 8080
   servlet:
     context-path: /identity
-#logging:
-#  level:
-#    root: INFO
-#    it.isgroup.identity: DEBUG
-#    org.springframework.security: DEBUG
-#  file:
-#    name: logs/identity.log  
-#  pattern:
-#    console: "%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
-#    file:    "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"

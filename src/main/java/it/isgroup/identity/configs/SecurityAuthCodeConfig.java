@@ -2,6 +2,7 @@ package it.isgroup.identity.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
@@ -10,13 +11,12 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableMethodSecurity
 public class SecurityAuthCodeConfig {
 
-	@Bean
+	@Bean @Order(2)
 	SecurityFilterChain security(HttpSecurity http, OidcUserService oidcUserService,
 			ClientRegistrationRepository clients) throws Exception {
 
