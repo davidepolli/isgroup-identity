@@ -1,4 +1,3 @@
-// src/main/java/it/isgroup/identity/mapper/UserMapper.java
 package it.isgroup.identity.mapper;
 
 import org.mapstruct.BeanMapping;
