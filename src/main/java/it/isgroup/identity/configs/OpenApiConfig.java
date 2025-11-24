@@ -27,21 +27,21 @@ import io.swagger.v3.oas.annotations.servers.Server;
 )
 
 
-@SecurityScheme(
-		  name = "keycloak-oauth",
-		  type = SecuritySchemeType.OAUTH2,
-		  flows = @OAuthFlows(
-		    authorizationCode = @OAuthFlow(
-		      authorizationUrl = "https://idpgw.test4mind.com/realms/demo-interview/protocol/openid-connect/auth",
-		      tokenUrl         = "https://idpgw.test4mind.com/realms/demo-interview/protocol/openid-connect/token",
-		      scopes = {
-		        @OAuthScope(name = "openid",  description = "OpenID"),
-		        @OAuthScope(name = "profile", description = "Profile"),
-		        @OAuthScope(name = "email",   description = "Email")
-		      }
-		    )
-		  )
-		)
+//@SecurityScheme(
+//  name = "keycloak-oauth",
+//  type = SecuritySchemeType.OAUTH2,
+//  flows = @OAuthFlows(
+//    authorizationCode = @OAuthFlow(
+//      authorizationUrl = "https://idpgw.test4mind.com/realms/demo-interview/protocol/openid-connect/auth",
+//      tokenUrl         = "https://idpgw.test4mind.com/realms/demo-interview/protocol/openid-connect/token",
+//      scopes = {
+//        @OAuthScope(name = "openid",  description = "OpenID"),
+//        @OAuthScope(name = "profile", description = "Profile"),
+//        @OAuthScope(name = "email",   description = "Email")
+//      }
+//    )
+//  )
+//)
 @Configuration
 public class OpenApiConfig {
   // Configurazioni avanzate (security, gruppi) possono essere aggiunte qui.

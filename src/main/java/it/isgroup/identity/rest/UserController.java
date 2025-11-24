@@ -45,7 +45,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/users")
-@SecurityRequirement(name = "keycloak-oauth")
+//@SecurityRequirement(name = "keycloak-oauth")
 public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);

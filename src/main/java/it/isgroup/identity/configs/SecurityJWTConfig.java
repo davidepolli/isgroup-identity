@@ -21,8 +21,8 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthen
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration
-@EnableMethodSecurity
+//@Configuration
+//@EnableMethodSecurity
 public class SecurityJWTConfig {
 
 	@Bean @Order(1)

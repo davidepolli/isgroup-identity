@@ -16,7 +16,7 @@ import org.springframework.security.web.util.matcher.OrRequestMatcher;
 @EnableMethodSecurity
 public class SecurityAuthCodeConfig {
 
-	@Bean @Order(2)
+	@Bean //@Order(2)
 	SecurityFilterChain security(HttpSecurity http, OidcUserService oidcUserService,
 			ClientRegistrationRepository clients) throws Exception {
 
